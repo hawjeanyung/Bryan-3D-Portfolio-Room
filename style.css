@@ -23,34 +23,40 @@ svg{
 }
 
 :root{
-  /* Light Theme Variables */
+  /* --- Light Theme Variables (Modern & Crisp) --- */
+  --color-text-light: #1C1D21;       /* Soft black for high readability */
+  --color-background-light: #F9F9FA; /* Ultra-clean, premium off-white */
+  
+  /* Vibrant accents for Light Mode */
+  --color-pink-light: #F43F5E;       /* Vibrant Rose (About Me) */
+  --color-blue-light: #3B82F6;       /* Modern Blue (Projects) */
+  --color-green-light: #10B981;      /* Emerald Green (Contact) */
 
-  --color-text-light: #333332;
-  --color-background-light: #FAF4E5;
-  --color-pink-light: #add8e6;
-  --color-green-light: #7AD0Ac;
-  --color-blue-light: #8395CD;
-
-  /* Dark Theme Variables */
-
-  --color-text-dark: #FAF4E5;
-  --color-background-dark: #8395CD;
+  /* --- Dark Theme Variables (Sleek & Glowing) --- */
+  --color-text-dark: #F3F4F6;        /* Crisp, easy-on-the-eyes white */
+  --color-background-dark: #111216;  /* Deep midnight slate */
+  
+  /* Pastel, glowing accents for Dark Mode */
+  --color-pink-dark: #FDA4AF;        /* Pastel Rose */
+  --color-blue-dark: #93C5FD;        /* Pastel Sky Blue */
+  --color-green-dark: #6EE7B7;       /* Pastel Mint */
 }
 
 .light-theme{
   --color-text: var(--color-text-light);
   --color-background: var(--color-background-light);
   --color-pink: var(--color-pink-light);
-  --color-green: var(--color-green-light);
   --color-blue: var(--color-blue-light);
+  --color-green: var(--color-green-light);
 }
 
 .dark-theme{
   --color-text: var(--color-text-dark);
   --color-background: var(--color-background-dark);
-  --color-pink: var(--color-text-dark);
-  --color-green: var(--color-text-dark);
-  --color-blue: var(--color-text-dark);
+  /* We now map the dark accents instead of forcing them all to be white! */
+  --color-pink: var(--color-pink-dark);
+  --color-blue: var(--color-blue-dark);
+  --color-green: var(--color-green-dark);
 }
 
 /* Experience --------------------------------------------- */
@@ -201,7 +207,7 @@ svg{
   }
 }
 
-/* Toggle Bar --------------------------------------------- */
+
 /* Toggle Bar (Premium Minimalist) --------------------------------------------- */
 .toggle-bar{
   position: fixed;
@@ -213,7 +219,7 @@ svg{
   top: 48px;
   right: 48px;
   gap: 12px;
-  z-index: 99999999999999;
+  z-index: 300;
 }
 
 .sun-wrapper, 
@@ -438,7 +444,7 @@ body.dark-theme .sun-wrapper {
 
 .hero-main{
   position: absolute;
-  bottom: 168px;
+  bottom: 110px;
   left: 0;
   color: var(--color-text);
 }

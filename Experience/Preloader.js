@@ -20,11 +20,24 @@ export default class Preloader extends EventEmitter {
             this.device = device;
         });
 
+        // Track highest progress seen so far
+        this.peakProgress = 0;
+
         this.resources.on("progress", (realProgress) => {
-            if (realProgress <= this.displayedProgress) return;
+            // Kill any previous progress tween before starting a new one
+            GSAP.killTweensOf(this);
+
+            if (realProgress <= this.peakProgress) return;
+            this.peakProgress = realProgress;
+
+            // Don't let the live counter go past 90 —
+            // finishLoadingCounter() owns the 90→100 stretch
+            const capped = Math.min(realProgress, 90);
+            if (capped <= this.displayedProgress) return;
+
             GSAP.to(this, {
-                displayedProgress: realProgress,
-                duration: 2,
+                displayedProgress: capped,
+                duration: 1.2,
                 ease: "power1.out",
                 onUpdate: () => {
                     const el = document.querySelector(".loading-percentage");
@@ -51,9 +64,12 @@ export default class Preloader extends EventEmitter {
 
     finishLoadingCounter() {
         return new Promise((resolve) => {
+            // Kill any lingering progress tween first
+            GSAP.killTweensOf(this);
+
             GSAP.to(this, {
                 displayedProgress: 100,
-                duration: 0.6,
+                duration: 1.0,
                 ease: "power2.out",
                 onUpdate: () => {
                     const el = document.querySelector(".loading-percentage");
@@ -67,12 +83,13 @@ export default class Preloader extends EventEmitter {
     secondIntro() {
         return new Promise((resolve) => {
             this.introStarted = true;
-            // Hide hero text spans before animating them in
-            GSAP.set(".hero-main-title .animatedis", { yPercent: 100 });
+
+            GSAP.set(".hero-main-title .animatedis",       { yPercent: 100 });
             GSAP.set(".hero-main-description .animatedis", { yPercent: 100 });
-            GSAP.set(".first-sub .animatedis", { yPercent: 100 });
-            GSAP.set(".second-sub .animatedis", { yPercent: 100 });
-            // Position the room off-screen to start
+            GSAP.set(".first-sub .animatedis",             { yPercent: 100 });
+            GSAP.set(".second-sub .animatedis",            { yPercent: 100 });
+
+            // Set room starting state
             if (this.room) {
                 this.room.scale.set(0.08, 0.08, 0.08);
                 this.room.position.set(
@@ -82,7 +99,7 @@ export default class Preloader extends EventEmitter {
                 );
             }
 
-            // Fade out the preloader overlay
+            // Fade preloader out
             GSAP.to(".preloader", {
                 opacity: 0,
                 duration: 0.8,
@@ -96,9 +113,14 @@ export default class Preloader extends EventEmitter {
 
             this.secondTimeline
                 .to(this.room.position, {
-                    x: 0, y: 0, z: 0,
-                    ease: "power1.out",
-                    duration: 1.2,
+                    x: -0.2, y: -0.2, z: 0,
+                    ease: "power2.out",
+                    duration: 1.4,
+                }, "same")
+                .to(this.room.scale, {
+                    x: 0.11, y: 0.11, z: 0.11,
+                    ease: "power2.out",
+                    duration: 1.4,
                 }, "same")
                 .to(this.roomChildren.cube.rotation, {
                     y: 2 * Math.PI + Math.PI / 4,
@@ -205,7 +227,10 @@ export default class Preloader extends EventEmitter {
                         this.experience.world.room.markIntroComplete();
                         resolve();
                     },
-                });
+                }, "chair")
+                .to(".toggle-bar", {
+                    opacity: 1,
+                }, "chair");
         });
     }
 

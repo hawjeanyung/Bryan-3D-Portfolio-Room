@@ -159,7 +159,7 @@ export default class Controls {
                 this.rectLight.width = 0.5;
                 this.rectLight.height = 0.7;
                 this.camera.orthographicCamera.position.set(0, 6.5, 10);
-                this.room.position.set(0, 0, 0);
+                this.room.position.set(-0.2, -0.2, 0);
                 // First section -----------------------------------------
                 this.firstMoveTimeline = new GSAP.timeline({
                     scrollTrigger: {
@@ -173,7 +173,7 @@ export default class Controls {
                 });
                 this.firstMoveTimeline.fromTo(
                     this.room.position,
-                    { x: 0, y: 0, z: 0 },
+                    { x:-0.2, y: -0.2, z: 0 },
                     {
                         x: () => {
                             return this.sizes.width * 0.0014;

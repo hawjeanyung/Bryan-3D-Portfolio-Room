@@ -7,6 +7,7 @@ export default class Interactivity {
         this.camera     = this.experience.camera;
         this.canvas     = this.experience.canvas;
         this.room       = this.experience.world.room;
+        this.renderer   = this.experience.renderer;
 
         this.raycaster         = new THREE.Raycaster();
         this.mouse             = new THREE.Vector2(-10, -10);
@@ -55,15 +56,16 @@ export default class Interactivity {
 
             if (key !== this.hoveredKey) {
                 this.hoveredKey = key;
-                this.room.showTooltip(this.room.HOVERABLE[key]);
-                this.room.isolateObject(key);
+                const obj = this.room.roomChildren[key];
+                this.renderer.outlineObject(obj);
+                this.room.showLabel(key);
                 this.canvas.style.cursor = "pointer";
             }
         } else {
             if (this.hoveredKey !== null) {
                 this.hoveredKey = null;
-                this.room.hideTooltip();
-                this.room.resetIsolation();
+                this.renderer.clearOutline();
+                this.room.hideLabel();
                 this.canvas.style.cursor = "default";
             }
         }

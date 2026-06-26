@@ -53,7 +53,6 @@ export default class Interactivity {
 
         if (hits.length > 0) {
             const key = hits[0].object.userData.interactiveKey;
-
             if (key !== this.hoveredKey) {
                 this.hoveredKey = key;
                 const obj = this.room.roomChildren[key];

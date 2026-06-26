@@ -367,9 +367,11 @@ export default class Room {
         this.actualRoom.rotation.y = this.lerp.current;
         this.mixer.update(this.time.delta * 0.003);
 
+        // Only project indicators that are currently visible
         if (this.indicators && this._introComplete) {
             for (const indicator of this.indicators) {
                 if (!indicator.anchor) continue;
+                if (indicator.element.style.opacity === "0") continue; // ← skip hidden ones
 
                 indicator.anchor.getWorldPosition(this.indicatorVector);
                 this.indicatorVector.project(this.orthoCamera);
